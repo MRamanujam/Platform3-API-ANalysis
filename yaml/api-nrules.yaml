@@ -1,0 +1,482 @@
+swagger: "2.0"
+basePath: /api
+schemes: 
+  - http
+  - https
+produces: 
+  - "application/json"
+info: 
+  version: "3.0.0-alpha1"
+  title: "Boodskap API"
+  description: "Boodskap IoT Platform API"
+  termsOfService: "https://boodskap.io/terms-conditions"
+  contact: 
+    name: "Boodskap Team"
+  license: 
+    name: "MIT"
+paths:
+  '/nrules/upsert':
+    post:
+      tags:
+        - Upsert Named Rule
+      summary: Create / Update Named Rule
+      operationId: upsertNamedRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: entity
+          in: body
+          description: NamedRule JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/NamedRule'
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/get/{name}':
+    get:
+      tags:
+        - Get Named Rule
+      summary: Retreive Named Rule
+      operationId: getNamedRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: name
+          in: path
+          description: Rule name
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/NamedRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/delete/{name}':
+    delete:
+      tags:
+        - Delete Named Rule
+      summary: Delete Named Rule
+      operationId: deleteNamedRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: name
+          in: path
+          description: Rule Name
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/delete/all':
+    delete:
+      tags:
+        - Delete All Named Rules
+      summary: Delete All Named Rules
+      operationId: deleteAllNamedRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/count/all':
+    get:
+      tags:
+        - Count All Named Rules
+      summary: Count All Named Rules
+      operationId: countAllNamedRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in admin user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/count':
+    get:
+      tags:
+        - Count Named Rules
+      summary: Count Named Rules
+      operationId: countNamedRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/list':
+    get:
+      tags:
+        - List Named Rules
+      summary: List Named Rules
+      operationId: listNamedRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: load
+          in: query
+          description: load the source code, by default yes
+          required: false
+          type: boolean
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of rules to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **name** is required
+          required: false
+          type: boolean
+        - name: name
+          in: query
+          description: >-
+            rule name of the previous list operation, **required** if **next** is specified
+          required: false
+          type: string      
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NamedRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/list/names':
+    get:
+      tags:
+        - List Named Rule Names
+      summary: List Named Rule Names
+      operationId: listNamedRuleNames
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of rules to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **name** is required
+          required: false
+          type: boolean
+        - name: name
+          in: query
+          description: >-
+            rule name of the previous list operation, **required** if **next** is specified
+          required: false
+          type: string      
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: string
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/search':
+    post:
+      tags:
+        - Search Named Rules
+      summary: Search Named Rules
+      operationId: searchNamedRules
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: load
+          in: query
+          description: load the source code, by default yes
+          required: false
+          type: boolean
+        - name: pageSize
+          in: query
+          description: Maximum number of objects to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: query
+          in: body
+          description: Search string
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NamedRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/nrules/invoke/{name}':
+    post:
+      tags:
+        - Invoke a Named Rule
+      summary: Invoke a Named Rule
+      operationId: invokeNamedRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: name
+          in: path
+          description: Rule name
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: args
+          in: body
+          description: arguments
+          required: true
+          schema:
+            type: object
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            type: object
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+definitions:
+  ApiError: 
+    type: "object"
+    required: 
+      - "code"
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"
+  Count:
+    type: object
+    required:
+      - total
+    properties:
+      total:
+        type: integer
+        format: int64
+  NamedRule:
+    allOf:
+    - $ref: '#/definitions/Rule'
+    - type: object
+      required:
+       - 'name'
+       - 'language'
+       - 'code'
+      properties:
+        name:
+          type: string
+  Rule:
+    type: object
+    discriminator: ruleType
+    required:
+    - language
+    - code
+    properties:
+      domainKey:
+        type: string
+      language:
+        type: string
+        enum:
+          - GROOVY
+          - JAVA_SCRIPT
+          - NODE_JS
+      code:
+        type: string
+      compilable:
+        type: boolean
+      description:
+        type: string
+      contexts:
+        type: array
+        items:
+          type: string
+      plugins:
+        type: array
+        items:
+          type: string
+      createdStamp:
+        type: integer
+        format: int64
+      updatedStamp:
+        type: integer
+        format: int64
+        
+  Success: 
+    type: "object"
+    required:
+      - code
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"

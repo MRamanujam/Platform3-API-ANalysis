@@ -1,0 +1,111 @@
+<div class="subheader grid__item" id="subheader">
+    <div class="subheader__main">
+        <h3 class="subheader__title"> Test </h3>
+        <span class="subheader__separator hidden"></span>
+        <div class="subheader__breadcrumbs">
+            <a href="#" class="subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                <span class="subheader__breadcrumbs-separator"></span>
+            <a href="" class="subheader__breadcrumbs-link"> API Analysis </a>
+                <span class="subheader__breadcrumbs-separator"></span>
+            <a href="#" class="api-group subheader__breadcrumbs-link"> Test Alexa APIs </a>
+
+        </div>
+    </div>
+</div>
+
+<div class="content grid__item grid__item--fluid homeScreen" id = "content">
+
+    <div class="portlet faq-v1">
+        <div class="portlet__body">
+            <div class="row">
+                <div class="col-xl-2 col-md-3">
+                    <ul class="nav apiDocs" id="nav" role="tablist">
+                        <li class="menu__item--parent nav__item">
+                            <a href="#" class="nav__link">
+                                <span class="nav__link-text">Alexa API Status</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xl-10 col-md-9">
+                    <h3 style="text-transform: capitalize">
+                        <span class="apiTitle"></span>
+                        <span class=""></span>
+                    </h3>
+                    <div class="row">
+
+                        <div class="col-xl-2 col-md-3">
+                            <input type="button" onclick="testAlexaApi()"  class="form-control btn btn-outline-primary " value="Test Api">
+                        </div>
+                        <div class="col-xl-2 col-md-3">
+
+                            <div class="header__topbar-item dropdown">
+                                    <div class="header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+                                        <span class="header__topbar-icon header__topbar-icon--warning">
+                                            <input type="button" onclick="editTestValue()"  class="form-control btn btn-outline-secondary " value="Edit Default value">
+                                        </span>
+                                    </div>
+                                    <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                                        <form>
+                        
+                                            <div  class="small-head head head--skin-light">
+                                                <h3 >
+                                                    API Test Default Values
+                                                  
+                                                </h3>
+                                            </div>
+                                           
+                        
+                                            <div class="grid-nav grid-nav--skin-light">
+
+                                                <div style="padding:1.5rem; max-height: 350px;overflow: auto">
+                                                    <input data-toggle="tooltip" title="Domain Name" type="text" name="" class="grid-nav__desc form-control " placeholder="Domain Name" id="domainName"><br>
+                                                    <input data-toggle="tooltip" title="Alexa Id" type="text" name="" class="grid-nav__desc form-control " placeholder="Alexa Id" id="alexaId"><br>
+                                                    <input data-toggle="tooltip" title="Asset Name" type="text" name="" class="grid-nav__desc form-control " placeholder="Device Name" id="deviceName"><br>
+                                                    <input data-toggle="tooltip" title="Property Name" type="text" name="" class="grid-nav__desc form-control " placeholder="Version
+                                                    e" id="propName"><br>
+                                                    <input data-toggle="tooltip" title="Property Value" type="text" name="" class="grid-nav__desc form-control " placeholder="Property Value" id="propVal"><br>
+                                                   
+                                                </div>
+                                                <div style="padding:1.5rem;">
+                                                        <input type="button" onclick="testAlexaApi()"  class="form-control btn btn-outline-primary " value="Test Api">
+                                                </div>
+                                                
+                                                  
+                                               
+                                            </div>
+
+                                            
+                        
+                                        </form>
+                                    </div>
+                                </div>
+                        
+
+
+
+
+
+                        </div>
+                    </div>  <br>
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12">
+                                      
+                            <div class="console" >
+                                <div style="font-size: 1.2em;position: absolute; right: 35px;"><a class="clear-icon" data-toggle="tooltip" title="clear console" data-placement="left" href="javascript:void(0)" onclick="clearConsole()" ><i class="fas fa-trash"></i></a></div> 
+                                <div id="console-area"></div> 
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+</div>
+
+
+<script src="/controllers/test-alexa-api.js"></script>

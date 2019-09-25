@@ -1,0 +1,61 @@
+.initialContent{
+    min-height: 350px !important;
+}
+
+.licenseText{
+    line-height: 2.5rem;
+    text-align: center;
+}
+
+.cpyBtn{
+    cursor: pointer;
+}
+
+.header-mobile__logo img{
+    width: 40px;
+}
+
+.aside__brand-logo img{
+    width: 60px;
+}
+
+.topHeaderMenu .menu__link-text i{
+    margin-right: 5px;
+}
+
+.homeScreen img{
+    width: 50px !important;
+}
+
+.homeScreen .grid-nav__title{
+    font-size: 1rem !important;
+}
+
+.homeScreen .grid-nav__item{
+    padding: 2rem !important;
+    border:0px !important;
+}
+.console{
+    background: #000;
+    height: 500px;
+    overflow: auto;
+    padding: 10px;
+    color: #fff;
+}
+.clear-icon {
+    background: #424242;padding: 3px 8px; color: #fff;border-radius: 2px;
+}
+
+.clear-icon:hover {
+    color: #424242;padding: 3px 8px; background: #fff;
+
+}
+.small-head {
+    padding: 1.5rem 1rem;
+}
+.small-head h3{
+    font-size: 1.1em;
+    color: #4396d1;
+    text-align: center;
+    
+}

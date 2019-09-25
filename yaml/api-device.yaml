@@ -1,0 +1,1966 @@
+swagger: "2.0"
+basePath: /api
+schemes: 
+  - http
+  - https
+produces: 
+  - "application/json"
+info: 
+  version: "3.0.0-alpha1"
+  title: "Boodskap API"
+  description: "Boodskap IoT Platform API"
+  termsOfService: "https://boodskap.io/terms-conditions"
+  contact: 
+    name: "Boodskap Team"
+  license: 
+    name: "MIT"
+paths:
+  '/device/upsert':
+    post:
+      tags:
+        - Upsert Device
+      summary: Create / Update Device
+      operationId: upsertDevice
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: entity
+          in: body
+          description: Device JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/Device'
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/get/{deviceId}':
+    get:
+      tags:
+        - Get Device
+      summary: Get Device
+      operationId: getDevice
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device id
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Device'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/countall':
+    post:
+      tags:
+        - Count All Devices
+      summary: Count All Devices
+      operationId: countAllDevices
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/count':
+    post:
+      tags:
+        - Count Devices
+      summary: Count Deviecs
+      operationId: countDevices
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/list':
+    get:
+      tags:
+        - List Devices
+      summary: List Devices
+      operationId: listDevices
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of devices to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **deviceId** is required
+          required: false
+          type: boolean
+        - name: deviceId
+          in: query
+          description: Last Device Id of the previous list operation, **required** if **next** is true
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Device'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/search':
+    post:
+      tags:
+        - Search Devieces
+      summary: Search Devices
+      operationId: searchDevices
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: pageSize
+          in: query
+          description: Maximum number of objects to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: query
+          in: body
+          description: Search string
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Device'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/delete/{deviceId}':
+    delete:
+      tags:
+        - Delete Device
+      summary: Delete Device
+      operationId: deleteDevice
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device Id
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/deleteall':
+    delete:
+      tags:
+        - Delete All Devices
+      summary: Delete All Devices
+      operationId: deleteAllDevices
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/property/upsert/{deviceId}':
+    post:
+      tags:
+        - Store Device Property
+      summary: Create / Update Device Property
+      operationId: storeDeviceProperty
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: entity
+          in: body
+          description: Property JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/Property'
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/property/get/{deviceId}/{name}':
+    get:
+      tags:
+        - Get Device Property
+      summary: Retreive Device Property
+      operationId: getDeviceProperty
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device ID
+          required: true
+          type: string
+        - name: name
+          in: path
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Property'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/property/list/{deviceId}':
+    get:
+      tags:
+        - List Device Properties
+      summary: List Device Properties
+      operationId: listDeviceProperties
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of properties to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **name** is required
+          required: false
+          type: boolean
+        - name: name
+          in: query
+          description: Last Porperty Name of the previous list operation, **required** if **next** is true
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Property'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/property/delete/{deviceId}/{name}':
+    delete:
+      tags:
+        - Delete Device Property
+      summary: Delete Stored Device Property
+      operationId: deleteDeviceProperty
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device ID
+          required: true
+          type: string
+        - name: name
+          in: path
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/property/deleteall/{deviceId}':
+    delete:
+      tags:
+        - Delete All Device Properties
+      summary: Delete All Device Properties
+      operationId: deleteAllDeviceProperties
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Device ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/upsert':
+    post:
+      tags:
+        - Create / Update Device Group
+      summary: Create / Update Device Group
+      operationId: upsertDeviceGroup
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: entity
+          in: body
+          description: DeviceGroup JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/DeviceGroup'
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/get/{odid}/{gid}':
+    get:
+      tags:
+        - Get Device Group
+      summary: Get Device Group
+      operationId: getDeviceGroup
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: odid
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: gid
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/DeviceGroup'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/count':
+    post:
+      tags:
+        - Count All Device Groups
+      summary: Count All Device Groups
+      operationId: countAllDeviceGroups
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/remove':
+    delete:
+      tags:
+        - Delete All Device Groups
+      summary: Delete All Deive Groups
+      operationId: deleteAllDeviceGroups
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in admin user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Success'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/remove/{odid}':
+    delete:
+      tags:
+        - Delete Device Groups
+      summary: Delete Deivce Groups
+      operationId: deleteDeviceGroups
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: odid
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Success'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/remove/{odid}/{gid}':
+    delete:
+      tags:
+        - Delete Deivce Group
+      summary: Delete Device Group
+      operationId: deleteDeviceGroup
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: odid
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: gid
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Success'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/list/{odid}':
+    get:
+      tags:
+        - List Device Groups
+      summary: List Device Groups
+      operationId: listDeviceGroups
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: odid
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of devices to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **gid** is required
+          required: false
+          type: boolean
+        - name: gid
+          in: query
+          description: Last Group Id of the previous list operation, **required** if **next** is true
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DeviceGroup'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/search':
+    post:
+      tags:
+        - Search Device Groups
+      summary: Search Device Groups
+      operationId: searchDeviceGroups
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: pageSize
+          in: query
+          description: Maximum number of objects to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: query
+          in: body
+          description: Search string
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DeviceGroup'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/send/{commandId}':
+    post:
+      tags:
+        - Send JSON Command to devices
+      summary: Send JSON command to devices
+      operationId: sendJSONCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/Command'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/send/template/{commandId}':
+    post:
+      tags:
+        - Send JSON Command to devices using Template
+      summary: Send JSON command to devices using Template
+      operationId: sendJSONCommandTemplate
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/TemplateCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/broadcast/{commandId}':
+    post:
+      tags:
+        - Broadcast JSON Command to devices
+      summary: Broadcast JSON command to devices
+      operationId: broadcastJSONCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/BroadcastCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/broadcast/template/{commandId}':
+    post:
+      tags:
+        - Broadcast JSON Command to devices using Template
+      summary: Broadcast JSON command to devices using Template
+      operationId: broadcastJSONCommandTemplate
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/TemplateBroadcastCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/send/raw':
+    post:
+      tags:
+        - Send Raw Command to devices
+      summary: Send Raw Command to devices
+      operationId: sendRawCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/RawCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/broadcast/raw':
+    post:
+      tags:
+        - Broadcast Raw Command to devices
+      summary: Broadcast Raw Command to devices
+      operationId: broadcastRawCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/BroadcastRawCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/status/{requestId}':
+    get:
+      tags:
+        - Get Command Status
+      summary: Get Command Status
+      operationId: getCommandStatus
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: requestId
+          in: path
+          description: Unique Request ID returned while sending/broadcasting commands
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SentCommandStatus'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/status/list':
+    get:
+      tags:
+        - List Command Status
+      summary: List Command Status
+      operationId: listCommandStatus
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of devices to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **requestId** is required
+          required: false
+          type: boolean
+        - name: requestId
+          in: query
+          description: Last Request ID of the previous list operation, **required** if **next** is true
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SentCommandStatus'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/command/sent/status/list':
+    get:
+      tags:
+        - List Command Sent Status
+      summary: List Command Sent Status
+      operationId: listCommandSentStatus
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of devices to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **deviceId**, **corrId** are required
+          required: false
+          type: boolean
+        - name: deviceId
+          in: query
+          required: false
+          description: Last Request ID of the previous list operation, **required** if **next** is true
+          type: string
+        - name: corrId
+          in: query
+          description: Last Corr ID of the previous list operation, **required** if **next** is true
+          required: false
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CommandStatus'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/command/send/{deviceId}/{groupId}/{commandId}':
+    post:
+      tags:
+        - Send JSON Command to devices in Group
+      summary: Send JSON command to devices in Group
+      operationId: sendJSONGroupCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/GroupCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/command/send/template/{deviceId}/{groupId}/{commandId}':
+    post:
+      tags:
+        - Send JSON Command to devices in Group using Template
+      summary: Send JSON command to devices in Group using Template
+      operationId: sendJSONGroupCommandTemplate
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/GroupTemplateCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/command/broadcast/{deviceId}/{groupId}/{commandId}':
+    post:
+      tags:
+        - Broadcast JSON Command to devices in Group
+      summary: Broadcast JSON command to devices in Group
+      operationId: broadcastJSONGroupCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/GroupBroadcastCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/command/broadcast/template/{deviceId}/{groupId}/{commandId}':
+    post:
+      tags:
+        - Broadcast JSON Command to devices in Group using Template
+      summary: Broadcast JSON command to devices in Group using Template
+      operationId: broadcastJSONGroupCommandTemplate
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: commandId
+          in: path
+          description: Command Identifier
+          required: true
+          type: integer
+          format: int32
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/GroupTemplateBroadcastCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/command/send/raw/{deviceId}/{groupId}':
+    post:
+      tags:
+        - Send Raw Command to devices
+      summary: Send Raw Command to devices
+      operationId: sendRawGroupCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/GroupRawCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/device/group/command/broadcast/raw/{deviceId}/{groupId}':
+    post:
+      tags:
+        - Broadcast Raw Command to devices
+      summary: Broadcast Raw Command to devices
+      operationId: broadcastRawGroupCommand
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: deviceId
+          in: path
+          description: Owner Device ID
+          required: true
+          type: string
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: command
+          in: body
+          description: Command JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/GroupBroadcastRawCommand'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/IDResult"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+definitions:
+  ApiError: 
+    type: "object"
+    required: 
+      - "code"
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"
+  BroadcastCommand:
+    type: object
+    discriminator: broadcastCommandType
+    required:
+    - data
+    - deviceModel
+    properties:
+      data:
+        type: object
+      deviceModel:
+        type: string
+      deviceVersion:
+        type: string
+  BroadcastRawCommand:
+    type: object
+    discriminator: broadcastRawCommandType
+    required:
+    - deviceModel
+    - data
+    - format
+    properties:
+      deviceModel:
+        type: string
+      deviceVersion:
+        type: string
+      data:
+        type: string
+      format:
+        type: string
+        enum:
+         - BASE64
+         - HEX
+         - TEXT
+  Command:
+    type: object
+    discriminator: commandType
+    required:
+    - deviceIds
+    - data
+    properties:
+      deviceIds:
+        type: array
+        items:
+          type: string
+      data:
+        type: object
+  CommandStatus:
+    type: object
+    properties:
+      domainKey:
+        type: string
+      requestId:
+        type: string
+      deviceId:
+        type: string
+      corrId:
+        type: integer
+        format: int64
+        description: unique command identifier or this device
+      status:
+        type: string
+        enum:
+          - QUEUED
+          - NOT_FOUND
+          - NOT_CONNECTED
+          - SENT
+          - FAILED
+          - ACKED
+          - NACKED
+          - NOT_ALLOWED
+          - CHANNEL_INACTIVE
+      createdStamp:
+        type: integer
+        format: int64
+      queuedStamp:
+        type: integer
+        format: int64
+      sentStamp:
+        type: integer
+        format: int64
+      ackedStamp:
+        type: integer
+        format: int64
+      commandType:
+        type: string
+        enum:
+          - JSON_COMMAND
+          - RAW_COMMAND
+      dataChannel:
+        type: string
+        enum:
+          - UDP
+          - MQTT
+          - HTTP
+          - COAP
+          - TCP
+          - FCM
+          - LORA
+          - FTP
+          - TFTP
+      nodeId:
+        type: string
+      nodeUid:
+        type: string
+        format: uuid
+      description:
+        type: string
+      reportedIp:
+        type: string
+      reportedPort:
+        type: integer
+        format: int32
+  Count:
+    type: object
+    required:
+      - total
+    properties:
+      total:
+        type: integer
+        format: int64
+  Device:
+    type: object
+    required:
+      - deviceId
+    properties:
+      deviceId:
+        type: string
+      domainKey:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      modelId:
+        type: string
+      version:
+        type: string
+      password:
+        type: string
+      assetId:
+        type: string
+      reportedIp:
+        type: string
+      reportedPort:
+        type: integer
+        format: int32
+      nodeId:
+        type: string
+      nodeUid:
+        type: string
+      channel:
+        type: string
+      registeredStamp:
+        type: integer
+        format: int64
+      reportedStamp:
+        type: integer
+        format: int64
+  DeviceGroup:
+    allOf:
+    - $ref: '#/definitions/Group'
+    - type: object
+      required:
+       - 'ownerDeviceId'
+      properties:
+        ownerDeviceId:
+          type: string
+  DomainObject:
+    type: object
+    discriminator: domainObjectType
+    properties:
+      domainKey:
+        type: string
+  Group:
+    type: object
+    discriminator: groupType
+    required:
+    - groupId
+    - name
+    properties:
+      domainKey:
+        type: string
+      groupId:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      individualBroadcast:
+        type: boolean
+      groupEmail:
+        type: string
+      groupPhone:
+        type: string
+      createdStamp:
+        type: integer
+        format: int64
+      updatedStamp:
+        type: integer
+        format: int64
+  GroupBroadcastCommand:
+    allOf:
+    - $ref: '#/definitions/GroupCommand'
+    - type: object
+      required:
+       - 'deviceModel'
+      properties:
+        deviceModel:
+          type: string
+        deviceVersion:
+          type: string
+  GroupBroadcastRawCommand:
+    allOf:
+    - $ref: '#/definitions/GroupRawCommand'
+    - type: object
+      required:
+       - 'deviceModel'
+      properties:
+        deviceModel:
+          type: string
+        deviceVersion:
+          type: string
+  GroupCommand:
+    type: object
+    discriminator: groupCommandType
+    required:
+    - data
+    properties:
+      data:
+        type: object
+  GroupRawCommand:
+    type: object
+    discriminator: groupRawCommandType
+    required:
+    - data
+    properties:
+      data:
+        type: string
+      format:
+        type: string
+        enum:
+         - BASE64
+         - HEX
+         - TEXT
+  GroupTemplateBroadcastCommand:
+    required:
+      - command
+      - templateId
+    properties:
+      command:
+        $ref: "#/definitions/GroupBroadcastCommand"
+      templateId:
+        type: string
+      system:
+        type: boolean
+      mergeContent:
+        type: object
+  GroupTemplateCommand:
+    required:
+      - command
+      - templateId
+    properties:
+      command:
+        $ref: "#/definitions/GroupCommand"
+      templateId:
+        type: string
+      system:
+        type: boolean
+      mergeContent:
+        type: object
+  IDResult:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
+  Property:
+    allOf:
+    - $ref: '#/definitions/SystemProperty'
+    - $ref: '#/definitions/DomainObject'
+    - type: object
+      discriminator: propertyType
+  RawCommand:
+    type: object
+    discriminator: rawCommandType
+    required:
+    - deviceIds
+    - data
+    - format
+    properties:
+      deviceIds:
+        type: array
+        items:
+          type: string
+      data:
+        type: string
+      format:
+        type: string
+        enum:
+         - BASE64
+         - HEX
+         - TEXT
+  SentCommandStatus:
+    type: object
+    properties:
+      domainKey:
+        type: string
+      requestId:
+        type: string
+      deviceIds:
+        type: array
+        items:
+          type: string
+      data:
+        type: object
+      rawData:
+        type: string
+      format:
+        type: string
+        enum:
+         - BASE64
+         - HEX
+         - TEXT
+      deviceId:
+        type: string
+      commandId:
+        type: integer
+        format: int32
+      groupId:
+        type: string
+      templateId:
+        type: string
+      system:
+        type: boolean
+      mergeContent:
+        type: object
+      deviceModel:
+        type: string
+      deviceVersion:
+        type: string
+      totalCount:
+        type: integer
+        format: int32
+      sentCount:
+        type: integer
+        format: int32
+      failedCount:
+        type: integer
+        format: int32
+      queuedStamp:
+        type: integer
+        format: int64
+      completedStamp:
+        type: integer
+        format: int64
+      status:
+        type: string
+        enum:
+          - QUEUED
+          - PROCESSING
+          - PROCESSED
+          - FAILED
+      commandType:
+        type: string
+        enum:
+          - COMMAND
+          - RAW_COMMAND
+          - BROADCAST_COMMAND
+          - RAW_BROADCAST_COMMAND
+          - GROUP_COMMAND
+          - GROUP_RAW_COMMAND
+          - TEMPLATE_COMMAND
+          - TEMPLATE_BROADCAST_COMMAND
+          - GROUP_TEMPLATE_COMMAND
+          - GROUP_TEMPLATE_BROADCAST_COMMAND
+  Storable:
+    type: object
+    discriminator: storableType
+    properties:
+      dataFormat:
+        type: string
+        description: Required if **dataType** is **blob**
+        enum:
+          - AS_IS
+          - JSON
+          - HEX
+          - BASE64
+      description:
+        type: string
+  Success: 
+    type: "object"
+    required:
+      - code
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"
+  SystemProperty:
+    allOf:
+    - $ref: '#/definitions/Storable'
+    - type: object
+      discriminator: systemPropertyType
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        createdStamp:
+          type: integer
+          format: int64
+        updatedStamp:
+          type: integer
+          format: int64
+  TemplateBroadcastCommand:
+    required:
+      - deviceModel
+      - templateId
+      - mergeContent
+    properties:
+      deviceModel:
+        type: string
+      deviceVersion:
+        type: string
+      templateId:
+        type: string
+      system:
+        type: boolean
+      mergeContent:
+        type: object
+  TemplateCommand:
+    required:
+      - command
+      - templateId
+    properties:
+      command:
+        $ref: "#/definitions/Command"
+      templateId:
+        type: string
+      system:
+        type: boolean
+      mergeContent:
+        type: object

@@ -1,0 +1,481 @@
+swagger: "2.0"
+basePath: /api
+schemes: 
+  - http
+  - https
+produces: 
+  - "application/json"
+info: 
+  version: "3.0.0-alpha1"
+  title: "Boodskap API"
+  description: "Boodskap IoT Platform API"
+  termsOfService: "https://boodskap.io/terms-conditions"
+  contact: 
+    name: "Boodskap Team"
+  license: 
+    name: "MIT"
+paths:
+  '/rules/upsert':
+    post:
+      tags:
+        - Upsert Message Rule
+      summary: Create / Update Message Rule
+      operationId: upsertMessageRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: entity
+          in: body
+          description: MessageRule JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/MessageRule'
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/get/{specId}':
+    get:
+      tags:
+        - Get Message Rule
+      summary: Retreive Message Rule
+      operationId: getMessageRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: specId
+          in: path
+          description: Message Specification ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MessageRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/delete/{specId}':
+    delete:
+      tags:
+        - Delete Message Rule
+      summary: Delete Message Rule
+      operationId: deleteMessageRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: specId
+          in: path
+          description: Message Specification ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/delete/all':
+    delete:
+      tags:
+        - Delete All Message Rules
+      summary: Delete All Message Rules
+      operationId: deleteAllMessageRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/count/all':
+    get:
+      tags:
+        - Count All Message Rules
+      summary: Count All Message Rules
+      operationId: countAllMessageRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in admin user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/count':
+    get:
+      tags:
+        - Count Message Rules
+      summary: Count Message Rules
+      operationId: countMessageRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/list':
+    get:
+      tags:
+        - List Message Rules
+      summary: List Message Rules
+      operationId: listMessageRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: load
+          in: query
+          description: load the source code, by default yes
+          required: false
+          type: boolean
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of rules to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **specId** is required
+          required: false
+          type: boolean
+        - name: specId
+          in: query
+          description: >-
+            type value of the previous list operation, **required** if **next** is specified
+          required: false
+          type: string      
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MessageRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/list/specs':
+    get:
+      tags:
+        - List Named Rule Specs
+      summary: List Named Rule Specs
+      operationId: listNamedRuleSpecs
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of rules to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **specId** is required
+          required: false
+          type: boolean
+        - name: specId
+          in: query
+          description: >-
+            message spec id of the previous list operation, **required** if **next** is specified
+          required: false
+          type: string      
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: string
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/invoke/{specId}/{messageId}':
+    get:
+      tags:
+        - Invoke a Message Rule
+      summary: Invoke a Message Rule
+      operationId: invokeMessageRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: specId
+          in: path
+          description: Message Specification ID
+          required: true
+          type: string
+        - name: messageId
+          in: path
+          description: Message ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/rules/search':
+    post:
+      tags:
+        - Search Message Rules
+      summary: Search Message Rules
+      operationId: searchMessageRules
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: load
+          in: query
+          description: load the source code, by default yes
+          required: false
+          type: boolean
+        - name: pageSize
+          in: query
+          description: Maximum number of objects to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: query
+          in: body
+          description: Search string
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MessageRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+definitions:
+  ApiError: 
+    type: "object"
+    required: 
+      - "code"
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"
+  Count:
+    type: object
+    required:
+      - total
+    properties:
+      total:
+        type: integer
+        format: int64
+  MessageRule:
+    allOf:
+    - $ref: '#/definitions/Rule'
+    - type: object
+      required:
+       - 'messageId'
+       - 'language'
+       - 'code'
+      properties:
+        messageId:
+          type: string
+  Rule:
+    type: object
+    discriminator: ruleType
+    required:
+    - language
+    - code
+    properties:
+      domainKey:
+        type: string
+      language:
+        type: string
+        enum:
+          - GROOVY
+          - JAVA_SCRIPT
+          - NODE_JS
+      code:
+        type: string
+      compilable:
+        type: boolean
+      description:
+        type: string
+      contexts:
+        type: array
+        items:
+          type: string
+      plugins:
+        type: array
+        items:
+          type: string
+      createdStamp:
+        type: integer
+        format: int64
+      updatedStamp:
+        type: integer
+        format: int64
+        
+  Success: 
+    type: "object"
+    required:
+      - code
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"

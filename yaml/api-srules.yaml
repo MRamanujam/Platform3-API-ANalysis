@@ -1,0 +1,479 @@
+swagger: "2.0"
+basePath: /api
+schemes: 
+  - http
+  - https
+produces: 
+  - "application/json"
+info: 
+  version: "3.0.0-alpha1"
+  title: "Boodskap API"
+  description: "Boodskap IoT Platform API"
+  termsOfService: "https://boodskap.io/terms-conditions"
+  contact: 
+    name: "Boodskap Team"
+  license: 
+    name: "MIT"
+paths:
+  '/srules/upsert':
+    post:
+      tags:
+        - Upsert Scheduled Rule
+      summary: Create / Update Scheduled Rule
+      operationId: upsertScheduledRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: entity
+          in: body
+          description: ScheduledRule JSON object
+          required: true
+          schema:
+            $ref: '#/definitions/ScheduledRule'
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/get/{ruleId}':
+    get:
+      tags:
+        - Get Scheduled Rule
+      summary: Retreive Scheduled Rule
+      operationId: getScheduledRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: ruleId
+          in: path
+          description: Rule ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ScheduledRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/delete/{ruleId}':
+    delete:
+      tags:
+        - Delete Scheduled Rule
+      summary: Delete Scheduled Rule
+      operationId: deleteScheduledRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: ruleId
+          in: path
+          description: Rule ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/delete/all':
+    delete:
+      tags:
+        - Delete All Scheduled Rules
+      summary: Delete All Scheduled Rules
+      operationId: deleteAllScheduledRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/count/all':
+    get:
+      tags:
+        - Count All Scheduled Rules
+      summary: Count All Scheduled Rules
+      operationId: countAllScheduledRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in admin user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/count':
+    get:
+      tags:
+        - Count Scheduled Rules
+      summary: Count Scheduled Rules
+      operationId: countScheduledRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Count"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/list':
+    get:
+      tags:
+        - List Scheduled Rules
+      summary: List Scheduled Rules
+      operationId: listScheduledRules
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: load
+          in: query
+          description: load the source code, by default yes
+          required: false
+          type: boolean
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of rules to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **ruleId** is required
+          required: false
+          type: boolean
+        - name: ruleId
+          in: query
+          description: >-
+            rule id of the previous list operation, **required** if **next** is specified
+          required: false
+          type: string      
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ScheduledRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/list/ids':
+    get:
+      tags:
+        - List Scheduled Rule IDs
+      summary: List Scheduled Rule IDs
+      operationId: listScheduledRuleIDs
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Page index, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: Maximum number of rules to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: next
+          in: query
+          description: If next is true, **ruleId** is required
+          required: false
+          type: boolean
+        - name: ruleId
+          in: query
+          description: >-
+            rule id of the previous list operation, **required** if **next** is specified
+          required: false
+          type: string      
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              type: string
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/search':
+    post:
+      tags:
+        - Search Scheduled Rules
+      summary: Search Scheduled Rules
+      operationId: searchScheduledRules
+      consumes:
+        - "application/json"
+      produces:
+        - application/json
+      parameters:
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: load
+          in: query
+          description: load the source code, by default yes
+          required: false
+          type: boolean
+        - name: pageSize
+          in: query
+          description: Maximum number of objects to be listed
+          required: false
+          type: integer
+          format: int32
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+        - name: query
+          in: body
+          description: Search string
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ScheduledRule'
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+  '/srules/invoke/{ruleId}':
+    get:
+      tags:
+        - Invoke a Scheduled Rule
+      summary: Invoke a Scheduled Rule
+      operationId: invokeScheduledRule
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: ruleId
+          in: path
+          description: Rule ID
+          required: true
+          type: string
+        - name: atoken
+          in: query
+          description: Auth token of the logged in user
+          required: true
+          type: string
+        - name: dkey
+          in: query
+          description: Domain Key, optional
+          required: false
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema: 
+            $ref: "#/definitions/Success"
+        "417":
+          description: "API Error"
+          schema: 
+            $ref: "#/definitions/ApiError"
+definitions:
+  ApiError: 
+    type: "object"
+    required: 
+      - "code"
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"
+  Count:
+    type: object
+    required:
+      - total
+    properties:
+      total:
+        type: integer
+        format: int64
+  Rule:
+    type: object
+    discriminator: ruleType
+    required:
+    - language
+    - code
+    properties:
+      domainKey:
+        type: string
+      language:
+        type: string
+        enum:
+          - GROOVY
+          - JAVA_SCRIPT
+          - NODE_JS
+      code:
+        type: string
+      compilable:
+        type: boolean
+      description:
+        type: string
+      contexts:
+        type: array
+        items:
+          type: string
+      plugins:
+        type: array
+        items:
+          type: string
+      createdStamp:
+        type: integer
+        format: int64
+      updatedStamp:
+        type: integer
+        format: int64
+        
+  ScheduledRule:
+    allOf:
+    - $ref: '#/definitions/Rule'
+    - type: object
+      required:
+       - 'ruleId'
+       - 'pattern'
+       - 'language'
+       - 'code'
+      properties:
+        ruleId:
+          type: string
+        pattern:
+          type: string
+  Success: 
+    type: "object"
+    required:
+      - code
+    properties: 
+      code: 
+        type: "string"
+      message: 
+        type: "string"
