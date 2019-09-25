@@ -1,39 +1,25 @@
 var DOMAIN_NAME = '';
 
-var bRulesObj = {
-    domainKey: DOMAIN_NAME,
+var dRulesObj = {
+    // domainKey: DOMAIN_NAME,
     language: "GROOVY",
-    code: "log.info('testing...')",
+    code: "log.info('domain Rule Test...');",
     compilable: true,
-    description: "test Binary Rules",
+    description: "test Domain Rule",
     contexts: [],
-    plugins: [],
-    type: "test"
-  }
-var listBRulesObj = {
-    load:true,
-    page:'',
-    pageSize:'',
-    dkey:DOMAIN_NAME,
-    next:false,
-    type:''
+    plugins: []
 }
-var searchBRulesObj = {
-    load:true,
-    pageSize:'',
-    dkey:DOMAIN_NAME,
-    query:"type like '%es%'"
-}
+
 $(document).ready(function () {
     $(".docmenu").addClass('active');
 
 });
 
 
-function testBRulesApi() {
+function testDRulesApi() {
     DOMAIN_NAME = $('#domainName').val();
 
-    upsertBRulesApi(bRulesObj);
+    upsertDomainRuleApi(dRulesObj);
 }
 function clearConsole(){
     $('#console-area').html('');
@@ -58,74 +44,45 @@ function errorConsole(apiName, res) {
     $('#console-area').append(`<br> <span style="color:red"> > ` + apiName + ` API failed...</span><br>` + JSON.stringify(res) + ``);
 
 }
-function upsertBRulesApi(obj){
-    var apiName = ' Upsert Binary Rules ';
-    upsertBRules(obj,function(status,res){
+function upsertDomainRuleApi(obj){
+    var apiName = ' Upsert Domain Rules ';
+    upsertDomainRule(obj,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        getBRulesApi(bRulesObj.type);   
+        getDomainRuleApi();   
     })
 }
-function getBRulesApi(type){
-    var apiName = ' Get Binary Rules ';
-    getBRules(type,DOMAIN_NAME,function(status,res){
+function getDomainRuleApi(){
+    var apiName = ' Get Domain Rules ';
+    getDomainRule(DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        countAllBRulesApi();
+        countAllDomainRulesApi();
     })
 }
-function countAllBRulesApi() {
-    var apiName = ' Count All Binary Rules ';
-    countAllBRules(function(status,res){
+function countAllDomainRulesApi() {
+    var apiName = ' Count All Domain Rules ';
+    countAllDomainRules(function(status,res){
         if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res);
-        countBRulesApi();
+        else errorConsole(apiName, res);
+        deleteDomainRuleApi();
     })
 }
-function countBRulesApi(){
-    var apiName = ' Count Binary Rules ';
-    countBRules(DOMAIN_NAME,function(status,res){
+
+function deleteDomainRuleApi(){
+    var apiName = ' Delete Domain Rules';
+    deleteDomainRule(DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res);
-        listBRulesApi(listBRulesObj);
+        else errorConsole(apiName, res); 
     })
 }
-function listBRulesApi(obj){
-    var apiName = ' List Binary Rules ';
-    listBRules(obj,function(status,res){
+function invokeDomainRuleApi(mid){
+    var apiName = ' Invoke Domain Rules ';
+    invokeDomainRule(mid,DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res);
-        searchBRulesApi(searchBRulesObj);
-    })
-}
-function searchBRulesApi(obj){
-    var apiName = ' Search Binary Rules ';
-    searchBRules(obj,function(status,res){
-        if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res);
-        invokeBRulesApi(bRulesObj.type,'1001');
-    })
-}
-function invokeBRulesApi(type,mid){
-    var apiName = ' Invoke Binary Rules ';
-    invokeBRules(type,mid,DOMAIN_NAME,function(status,res){
-        if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res);
+        else errorConsole(apiName, res);
         deleteBRulesApi(bRulesObj.type);
     })
 }
-function deleteBRulesApi(type) {
-    var apiName = ' Delete Binary Rules';
-    deleteBRules(type,DOMAIN_NAME,function(status,res){
-        if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res); 
-        deleteAllBRulesApi();
-    })
-}
-function deleteAllBRulesApi() {
-    var apiName = ' Delete All Binary Rules ';
-    deleteAllBRules(DOMAIN_NAME,function(status,res){
-        if (status) successConsole(apiName, res);
-        else       errorConsole(apiName, res); 
-    })
-}
+
+/// in invoke domain rule messageID????

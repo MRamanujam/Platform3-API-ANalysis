@@ -1,28 +1,36 @@
 var DOMAIN_NAME = '';
 
-var bRulesObj = {
+var nRulesObj = {
     domainKey: DOMAIN_NAME,
     language: "GROOVY",
-    code: "log.info('testing...')",
+    code: "log.info('nrule test...');",
     compilable: true,
-    description: "test Binary Rules",
+    description: "Named Rules Test...",
     contexts: [],
     plugins: [],
-    type: "test"
+    name: "ntest"
   }
-var listBRulesObj = {
+var listNRulesObj = {
     load:true,
     page:'',
     pageSize:'',
     dkey:DOMAIN_NAME,
     next:false,
-    type:''
+    name:''
 }
-var searchBRulesObj = {
+var listNRuleNamesObj = {
+    page:'',
+    pageSize:'',
+    dkey:DOMAIN_NAME,
+    next:false,
+    name:''
+}
+
+var searchNRulesObj = {
     load:true,
     pageSize:'',
     dkey:DOMAIN_NAME,
-    query:"type like '%es%'"
+    query:"name like '%es%'"
 }
 $(document).ready(function () {
     $(".docmenu").addClass('active');
@@ -30,10 +38,10 @@ $(document).ready(function () {
 });
 
 
-function testBRulesApi() {
+function testNRulesApi() {
     DOMAIN_NAME = $('#domainName').val();
 
-    upsertBRulesApi(bRulesObj);
+    upsertNamedRuleApi(nRulesObj);
 }
 function clearConsole(){
     $('#console-area').html('');
@@ -58,73 +66,81 @@ function errorConsole(apiName, res) {
     $('#console-area').append(`<br> <span style="color:red"> > ` + apiName + ` API failed...</span><br>` + JSON.stringify(res) + ``);
 
 }
-function upsertBRulesApi(obj){
-    var apiName = ' Upsert Binary Rules ';
-    upsertBRules(obj,function(status,res){
+function upsertNamedRuleApi(obj){
+    var apiName = ' Upsert Named Rules ';
+    upsertNamedRule(obj,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        getBRulesApi(bRulesObj.type);   
+        getNamedRuleApi(nRulesObj.name);   
     })
 }
-function getBRulesApi(type){
-    var apiName = ' Get Binary Rules ';
-    getBRules(type,DOMAIN_NAME,function(status,res){
+function getNamedRuleApi(name){
+    var apiName = ' Get Named Rules ';
+    getNamedRule(name,DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        countAllBRulesApi();
+        countAllNamedRuleApi();
     })
 }
-function countAllBRulesApi() {
-    var apiName = ' Count All Binary Rules ';
-    countAllBRules(function(status,res){
+function countAllNamedRuleApi() {
+    var apiName = ' Count All Named Rules ';
+    countAllNamedRule(function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        countBRulesApi();
+        countNamedRuleApi();
     })
 }
-function countBRulesApi(){
-    var apiName = ' Count Binary Rules ';
-    countBRules(DOMAIN_NAME,function(status,res){
+function countNamedRuleApi(){
+    var apiName = ' Count Named Rules ';
+    countNamedRule(DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        listBRulesApi(listBRulesObj);
+        listNamedRulesApi(listNRulesObj);
     })
 }
-function listBRulesApi(obj){
-    var apiName = ' List Binary Rules ';
-    listBRules(obj,function(status,res){
+function listNamedRulesApi(obj){
+    var apiName = ' List Named Rules ';
+    listNamedRules(obj,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        searchBRulesApi(searchBRulesObj);
+        listNamedRuleNamesApi(nRulesObj.name,listNRuleNamesObj);
     })
 }
-function searchBRulesApi(obj){
-    var apiName = ' Search Binary Rules ';
-    searchBRules(obj,function(status,res){
+function listNamedRuleNamesApi(name,obj){
+    var apiName = ' List Named Rules Name ';
+    listNamedRuleNames(name,obj,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        invokeBRulesApi(bRulesObj.type,'1001');
+        searchNamedRulesApi(searchNRulesObj);
     })
 }
-function invokeBRulesApi(type,mid){
+function searchNamedRulesApi(obj){
+    var apiName = ' Search Named Rules ';
+    searchNamedRules(obj,function(status,res){
+        if (status) successConsole(apiName, res);
+        else       errorConsole(apiName, res);
+        deleteNamedRuleApi(nRulesObj.name);
+    })
+}
+function invokeNamedRule(type,mid){ // to be implemented
     var apiName = ' Invoke Binary Rules ';
     invokeBRules(type,mid,DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res);
-        deleteBRulesApi(bRulesObj.type);
+        // deleteBRulesApi(bRulesObj.type);
     })
 }
-function deleteBRulesApi(type) {
-    var apiName = ' Delete Binary Rules';
-    deleteBRules(type,DOMAIN_NAME,function(status,res){
+function deleteNamedRuleApi(name) {
+    var apiName = ' Delete Named Rules';
+    deleteNamedRule(name,DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res); 
-        deleteAllBRulesApi();
+        deleteAllNamedRuleApi();
     })
 }
-function deleteAllBRulesApi() {
-    var apiName = ' Delete All Binary Rules ';
-    deleteAllBRules(DOMAIN_NAME,function(status,res){
+function deleteAllNamedRuleApi() {
+    var apiName = ' Delete All Named Rules ';
+    deleteAllNamedRule(DOMAIN_NAME,function(status,res){
         if (status) successConsole(apiName, res);
         else       errorConsole(apiName, res); 
     })

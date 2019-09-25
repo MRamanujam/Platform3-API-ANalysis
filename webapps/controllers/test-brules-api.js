@@ -3,7 +3,7 @@ var DOMAIN_NAME = '';
 var bRulesObj = {
     domainKey: DOMAIN_NAME,
     language: "GROOVY",
-    code: "log.info('testing...')",
+    code: "log.info('testing...');",
     compilable: true,
     description: "test Binary Rules",
     contexts: [],

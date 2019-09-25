@@ -87,6 +87,10 @@ Routes.prototype.init = function () {
         res.render('test-brules-api.html', {layout: '', boodskap:self.app.boodskap});
     });
 
+    self.app.get('/nrules-api', sessionCheck, function (req, res) {
+        res.render('test-nrules-api.html', {layout: '', boodskap:self.app.boodskap});
+    });
+
     self.app.get('/drules-api', sessionCheck, function (req, res) {
         res.render('test-drules-api.html', {layout: '', boodskap:self.app.boodskap});
     });
