@@ -30,7 +30,7 @@
     "express-minify": "^1.0.0",
     "node-minify": "^3.1.0",
     "path": "^0.12.7",
-    "properties-reader": "0.0.16",
+    "properties-reader": "2.2.0",
     "q": "^1.5.1",
     "replace-in-file": "^3.4.2",
     "swagger-ui-express": "^3.0.9",
